@@ -1,0 +1,81 @@
+==================Collab Edit, by Youyang Gu, Tran Nguyen, Hanwen Xu==================
+
+Please read this document before running the program. Thanks!
+
+*** Location of items ***
+- deliverables contain all the items from the first two deadlines
+- Final_Design.pdf contains the revised design and GUI sketch
+- this file (README) contains info on how to run the program
+
+** Features **
+- Everything specified in the project handout, PLUS:
+- Display of all currently active clients 
+- Display of all currently active documents
+  (Note: there may be non-consistent Swing bugs with these displays with 4+ clients or 4+ documents)
+- Ability for the server to switch between viewing documents (switching not available for clients)
+  (Note: The Server is designed to NOT be able to edit the document)
+- Supports cut/copy/paste
+- Supports undo/redo
+- Supports bold/italic fonts (local only)
+
+**** Usage ****
+    There are two modes to launch the program. Host.java (under package model) is a text-based command 
+interface - we use it mainly for testing. LoginPage.java (under package ui) is usually the way to go for 
+manual testing. LoginPage.java needs to be run each time a new instance of a client or server needs to be
+created. On the other hand, Host.java takes in indefinite commands. We recommend using LoginPage.java
+since it has a GUI.
+
+    You have to create a server before you create a client - otherwise you will get an exception.
+It is usually sufficient to always run the server in default mode (localhost at port 4444).
+After a server is made, it should display the default document. You can now make a client by 
+running LoginPage.java again. Put in the appropriate commands (again, default is fine unless 
+you're running it on a separate computer). You would then be shown a document selection window. 
+You can choose to edit an existing document on the left, or create a new document in the textfield 
+on the right.
+
+    After you made your selection, you should now be able to see the document you chose to edit.
+Remember, only a client can edit a document - a server can only view documents (by design 
+choice, not because we can't implement it). 
+On the other hand, a client can only edit one document at a time, while a server can switch between
+viewing different documents by clicking on respective document name on the right side.
+ 
+    Feel free to make as many clients as you like. The documents will remain
+on the server as long as the server is not closed (regardless of the status of the clients).
+In addition to supporting all features specified by the project page, 
+try out the additional features listed above. Everything should work smoothly. In the rare case that 
+an exception is thrown (such as if a client loses internet connection), the client is shut down, 
+but the server and other clients should not be affected. 
+
+
+* Overall Testing strategy: 
+     * 
+     * This project can be broken down into three components: The GUI, the server/client, and the 
+     * operational transform algorithm. We will test each component independently using a combination 
+     * of automated unit tests and manual tests. The scope of the test would include  
+     * insert and delete commands that a user would typically type. We will flood the Operation Engine 
+     * with many of these commands concurrently to make sure that they can handle simultaneous edits.
+     * Of course, we also want to make sure that any illegal operations by the client do not crash
+     * the server, and are handled appropriate in our program. Exception handling is crucial, and 
+     * we want to make sure that our tests handle these corner cases.
+     * Lastly, after ensuring that each component works 
+     * successfully, we will manually run the whole program to make sure all project 
+     * specifications are satisfied.
+     * 
+     * The order of testing would be as follows: we first make sure that the server and client 
+     * connections can be established. This would be done using mostly manual tests. Next, we 
+     * test the GUI to make sure that a user changing the text would generate appropriate commands 
+     * on both the client side and server side. Finally, we want to make sure the operational 
+     * transform algorithm works such that concurrent edits on the document will be handled
+     * correctly and the final document is what we expected. Passing the tests in this order 
+     * would gives us high confidence that our project follows all the specifications.
+     * 
+     * Testing strategy and tests for the client is specified in: CollabClient.java & CollabClientTest.java
+     * 
+     * Testing strategy and tests for the server is specified in: CollabServer.java & CollabServerTest.java
+     *
+     * Testing strategy and tests for the GUI is defined in: ServerGui.java and ClientGui.java
+     * 
+     * Testing strategy and tests for the OT Algorithm is specified in: OperationTest.java & OperationEngineTest.java, 
+     *         
+     * Other tests are located in: CollabModelTest.java, HistoryBufferTest.java, ClientStateTableTest,             
+     *         StateDifferenceTest.java
